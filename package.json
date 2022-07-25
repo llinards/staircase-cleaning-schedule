@@ -4,6 +4,7 @@
   "description": "## Tech Stack Used:",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "dev": "nodemon app.js"
   },
   "repository": {
