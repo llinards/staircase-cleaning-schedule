@@ -6,8 +6,9 @@
 
 ## TODO:
 
-- [ ] Install NodeJS
-- [ ] Create logic to check wheter it's a new week
-- [ ] Create a logic to send SMS to the static number
-- [ ] Create a DB with neighbors phone numbers
+- [x] Install NodeJS
+- [ ] ~~Create logic to check wheter it's a new week~~
+- [x] Create CronJab to send every Saturday a new SMS
+- [x] Create a logic to send SMS
+- [x] Create a DB (Supabase) with neighbors phone numbers
 - [ ] Deploy to the production
