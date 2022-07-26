@@ -11,4 +11,4 @@
 - [x] Create CronJab to send every Saturday a new SMS
 - [x] Create a logic to send SMS
 - [x] Create a DB (Supabase) with neighbors phone numbers
-- [ ] Deploy to the production
+- [x] Deploy to the Heroku

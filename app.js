@@ -16,25 +16,35 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 let order = 0;
 
 const getApartaments = async () => {
-	const { data, error } = await supabase.from("apartament").select();
+	const { data, error } = await supabase.from("apartament").select().order("apartament", { ascending: true });
 	return data;
 };
 
 const job = new CronJob(
-	"*/1 * * * *",
+	// "*/1 * * * *",
+	"0 6 * * WED",
 	() => {
 		const from = "Home";
-		const text = "Ir pienākusi Jūsu kārta tīrīt kāpņu telpu! :)";
+		const textApartamentFour = "Sveika, Liene! Ir pienākusi Tava kārta tīrīt kāpņu telpu!";
+		const textApartamentFive = "Sveiciens, Simona un Linard! Ir pienākusi Jūsu kārta tīrīt kāpņu telpu!";
+		const textApartamentSix = "Sveiciens, Krista un Krister! Ir pienākusi Jūsu kārta tīrīt kāpņu telpu!";
 		const opts = {
 			type: "unicode",
 		};
 
 		getApartaments().then((res) => {
 			const apartamentPhoneNumbers = res[order].phone_numbers["phone_numbers"];
-
+			let text;
 			apartamentPhoneNumbers.forEach((number) => {
 				console.log("Tira dzivoklis: " + res[order].apartament);
 				console.log(number + " - " + new Date());
+				if (res[order].apartament === 4) {
+					text = textApartamentFour;
+				} else if (res[order].apartament === 5) {
+					text = textApartamentFive;
+				} else if (res[order].apartament === 6) {
+					text = textApartamentSix;
+				}
 				vonage.message.sendSms(from, number, text, opts, (err, responseData) => {
 					if (err) {
 						console.log(err);
