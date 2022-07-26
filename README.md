@@ -2,7 +2,10 @@
 
 ## Tech Stack Used:
 
-- TBD
+- NodeJS / Express
+- Supabase
+- Vongage SMS API
+- CronJob
 
 ## TODO:
 
