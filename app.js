@@ -68,7 +68,14 @@ const job = new CronJob(
 	"Europe/Riga"
 );
 
+app.get('/', (req, res) => {
+	res.send(':)')
+})
+
 app.listen(port, () => {
 	job.start();
-	console.log("App is running!");
+	console.log('---')
+	console.log(new Date());
+	console.log(`App is running on ${port} port!`);
+	console.log('---')
 });
