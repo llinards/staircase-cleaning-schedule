@@ -22,7 +22,7 @@ const getApartaments = async () => {
 
 const job = new CronJob(
 	// "*/1 * * * *",
-	"0 12 * * 2",
+	"0 5 * * 3",
 	() => {
 		const from = "Home";
 		const textApartamentFour = "Sveika, Liene! Ir pienākusi Tava kārta tīrīt kāpņu telpu!";
