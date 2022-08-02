@@ -22,7 +22,7 @@ const getApartaments = async () => {
 
 const job = new CronJob(
 	// "*/1 * * * *",
-	"0 3 * * 2",
+	"0 10 * * 2",
 	() => {
 		const from = "Home";
 		const textApartamentFour = "Sveika, Liene! Ir pienākusi Tava kārta tīrīt kāpņu telpu!";
@@ -44,6 +44,8 @@ const job = new CronJob(
 					text = textApartamentFive;
 				} else if (res[order].apartament === 6) {
 					text = textApartamentSix;
+				} else if (res[order].apartament === 1) {
+					text = textApartamentFive;
 				}
 				vonage.message.sendSms(from, number, text, opts, (err, responseData) => {
 					if (err) {
