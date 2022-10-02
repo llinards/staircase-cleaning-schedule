@@ -23,7 +23,7 @@ if (process.argv.length === 4) {
 }
 
 const getApartaments = async () => {
-	const { data, error } = await supabase.from("dev_apartament").select().order("apartament", { ascending: true });
+	const { data, error } = await supabase.from("apartament").select().order("apartament", { ascending: true });
 	return data;
 };
 
