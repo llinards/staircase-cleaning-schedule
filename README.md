@@ -19,4 +19,4 @@
 - v2.0
 - [x] Update Supabase DB with table containing messages
 - [x] Update sending logic
-- [ ] Deploy to the Digital Ocean or other hosting
+- [x] Deploy to the Digital Ocean or other hosting
