@@ -14,52 +14,61 @@ const vonage = new Vonage({
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 let order = 0;
+let currentMsg = 0;
+
+if (process.argv.length === 4) {
+	const orderMsgId = process.argv.slice(2);
+	order = parseInt(orderMsgId[0]);
+	currentMsg = parseInt(orderMsgId[1]);
+}
 
 const getApartaments = async () => {
-	const { data, error } = await supabase.from("apartament").select().order("apartament", { ascending: true });
+	const { data, error } = await supabase.from("dev_apartament").select().order("apartament", { ascending: true });
+	return data;
+};
+
+const getMessages = async () => {
+	const { data, error } = await supabase.from("messages").select().order("id", { ascending: true });
 	return data;
 };
 
 const job = new CronJob(
-	"0 8 * * 6",
+	"0 8 * * 1,6",
 	() => {
 		const from = "Home";
-		const textApartamentFour = "Sveika, Liene! Ir pienākusi Tava kārta tīrīt kāpņu telpu!";
-		const textApartamentFive = "Sveiciens, Simona un Linard! Ir pienākusi Jūsu kārta tīrīt kāpņu telpu!";
-		const textApartamentSix = "Sveiciens, Krista un Krister! Ir pienākusi Jūsu kārta tīrīt kāpņu telpu!";
 		const opts = {
 			type: "unicode",
 		};
 
 		getApartaments().then((res) => {
 			const apartamentPhoneNumbers = res[order].phone_numbers["phone_numbers"];
-			let text;
-			apartamentPhoneNumbers.forEach((number) => {
-				console.log("Tira dzivoklis: " + res[order].apartament);
-				console.log(number + " - " + new Date());
-				if (res[order].apartament === 4) {
-					text = textApartamentFour;
-				} else if (res[order].apartament === 5) {
-					text = textApartamentFive;
-				} else if (res[order].apartament === 6) {
-					text = textApartamentSix;
-				}
-				vonage.message.sendSms(from, number, text, opts, (err, responseData) => {
-					if (err) {
-						console.log(err);
-					} else {
-						if (responseData.messages[0]["status"] === "0") {
-							console.log("Message sent successfully.");
+			const apartamentsInfo = res;
+			getMessages().then((res) => {
+				const messages = res;
+				apartamentPhoneNumbers.forEach((number) => {
+					console.log("Tira dzivoklis: " + apartamentsInfo[order].apartament);
+					console.log(number + " - " + new Date());
+					vonage.message.sendSms(from, number, messages[currentMsg].message, opts, (err, responseData) => {
+						if (err) {
+							console.log(err);
 						} else {
-							console.log(`Message failed with error: ${responseData.messages[0]["error-text"]}`);
+							if (responseData.messages[0]["status"] === "0") {
+								console.log("Message sent successfully.");
+							} else {
+								console.log(`Message failed with error: ${responseData.messages[0]["error-text"]}`);
+							}
 						}
-					}
+					});
 				});
+				currentMsg = currentMsg + 1;
+				if (currentMsg >= messages.length) {
+					currentMsg = 0;
+					order = order + 1;
+					if (order >= apartamentsInfo.length) {
+						order = 0;
+					}
+				}
 			});
-			order = order + 1;
-			if (order === res.length) {
-				order = 0;
-			}
 		});
 	},
 	null,
@@ -67,14 +76,14 @@ const job = new CronJob(
 	"Europe/Riga"
 );
 
-app.get('/', (req, res) => {
-	res.send(':)')
-})
+app.get("/", (req, res) => {
+	res.send(":)");
+});
 
 app.listen(port, () => {
 	job.start();
-	console.log('---')
+	console.log("---");
 	console.log(new Date());
 	console.log(`App is running on ${port} port!`);
-	console.log('---')
+	console.log("---");
 });
