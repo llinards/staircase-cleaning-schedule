@@ -22,6 +22,9 @@ if (process.argv.length === 4) {
 	currentMsg = parseInt(orderMsgId[1]);
 }
 
+console.log(order);
+console.log(currentMsg);
+
 const getApartaments = async () => {
 	const { data, error } = await supabase.from("apartament").select().order("apartament", { ascending: true });
 	return data;
