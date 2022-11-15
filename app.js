@@ -36,7 +36,7 @@ const getMessages = async () => {
 };
 
 const job = new CronJob(
-	"0 8 * * 1,6",
+	"0 8 * * 3,0",
 	() => {
 		const from = "Home";
 		const opts = {
